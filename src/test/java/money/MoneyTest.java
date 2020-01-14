@@ -77,11 +77,21 @@ public class MoneyTest {
   @Test
   @Ignore
   public void testArrayEquals() {
-    assertEquals(new Object[] {"abc"}, new Object[] {"abc"});
+    assertEquals(new Object[]{"abc"}, new Object[]{"abc"});
   }
 
   @Test
   public void testIdentityRate() {
     assertEquals(1, new Bank().rate("USD", "USD"));
+  }
+
+  @Test
+  public void testMixedAddition() {
+    Expression fiveBucks = Money.dollar(5);
+    Expression tenFranc = Money.franc(10);
+    Bank bank = new Bank();
+    bank.addRate("CHF", "USD", 2);
+    Money result = bank.reduce(fiveBucks.plus(tenFranc), "USD");
+    assertEquals(Money.dollar(10), result);
   }
 }
